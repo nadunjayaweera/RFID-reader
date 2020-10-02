@@ -1,0 +1,25 @@
+#include <deprecated.h>
+#include <MFRC522.h>
+#include <MFRC522Extended.h>
+#include <require_cpp11.h>
+
+
+ pinRST = 9;
+ pinSDA = 10;
+MFRC522 mfrc522(pinSDA, pinRST);
+void setup() {
+  SPI.begin(); 
+  mfrc522.PCD_Init();
+  Serial.begin(9600); 
+}
+void loop() {
+  if (mfrc522.PICC_IsNewCardPresent()) {
+    if(mfrc522.PICC_ReadCardSerial()) { 
+      Serial.print("RFID TAG ID:");
+      for (byte i = 0; i < mfrc522.uid.size; ++i)
+        Serial.print(mfrc522.uid.uidByte[i], HEX); 
+        Serial.print(" "); 
+      }
+      Serial.println(); 
+    }
+  }
